@@ -1,6 +1,7 @@
 extern crate tdigest;
 
 use std::fs::File;
+use std::io::prelude::*;
 use std::io::BufReader;
 use tdigest::Tdigest;
 
@@ -21,30 +22,41 @@ fn integation_test_save_centroids() {
 }
 
 fn integration_test_digest(fspec: String) {
-    let result: i32 = 0;
-    let mut fileReader = BufReader::new(File::open(&fspec));
-    let mut vector: Vec<isize> = vec![];
+    let result: i32;
+    let f = File::open(&fspec).expect("file");
+    let f = BufReader::new(f);
 
-    for line in fileReader.Lines() {
-        match line {
-            Err(why) => {
-                println!("{:?}", why);
-                result = 1;
-            }
-            Ok(string) => match string.trim().parse::<isize>() {
-                None => {
-                    println!("Not a number!");
-                    result = 1;
-                }
-                Some(number) => println!("{}", number),
-            },
-        }
+    for line in f.lines() {
+        println!("{}", line.unwrap());
     }
+    result = 0;
+    assert_eq!(result, 0);
 }
+//    let result: i32 = 0;
+//    let mut fileReader = BufReader::new(File::open(&fspec));
+//    let mut vector: Vec<isize> = vec![];
+//
+//    for line in fileReader.Lines() {
+//        match line {
+//            Err(why) => {
+//                println!("{:?}", why);
+//                result = 1;
+//            }
+//            Ok(string) => match string.trim().parse::<isize>() {
+//                None => {
+//                    println!("Not a number!");
+//                    result = 1;
+//                }
+//                Some(number) => println!("{}", number),
+//            },
+//        }
+//    }
 
 #[test]
-fn integation_test_digests_with_datasets() {}
-
+fn integation_test_digests_with_datasets() {
+    integration_test_digest("data/lrg-skew-dataset.dat".to_string());
+}
+//
 //    let mut fileReader = BufReader::new(File::open(&path));
 //    for line in fileReader.lines() {
 //       match line {
@@ -55,4 +67,3 @@ fn integation_test_digests_with_datasets() {}
 //      }
 //     }
 //    }
-//}
