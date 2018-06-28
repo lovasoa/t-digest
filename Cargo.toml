@@ -1,0 +1,13 @@
+[package]
+name = "tdigest"
+version = "0.1.0"
+authors = ["Jim Cooke <Jim.Cooke@coogee.email"]
+
+[lib]
+name = "tdigest"
+
+[[bin]]
+name = "tdigest"
+
+[dependencies]
+quickersort = "3.0"
