@@ -61,6 +61,10 @@ pub struct Tdigest {
     unprocessed_weight: f64,
     min: f64,
     max: f64,
+    mean: f64,
+    stdev: f64,
+    count: usize,
+    total: f64,
 }
 
 impl Tdigest {
@@ -80,10 +84,19 @@ impl Tdigest {
             unprocessed_weight: 0.0,
             min: ::std::f64::MAX,
             max: -::std::f64::MAX,
+            mean: 0.0,
+            stdev: 0.0,
+            count: 0,
+            total: 0.0,
         }
     }
 
     fn process(&mut self) {
+        let mut sd_m: f64 = 0.0;
+        let mut sd_s: f64 = 0.0;
+        let mut sd_k: f64 = 1.0;
+        self.count = 0;
+        self.stdev = 0.0;
         if self.unprocessed.len() > 0 || self.processed.len() > self.max_processed {
             // Append all processed centroids to the unprocessed list and sort by mean
             self.unprocessed.cvect.append(&mut self.processed.cvect);
@@ -102,6 +115,18 @@ impl Tdigest {
             let mut idx: usize;
             let mut rec: i32 = 0;
             for centroid in self.unprocessed.cvect.iter() {
+                // update the count
+                self.count += centroid.weight.round() as usize;
+
+                // update the Welford standard deviation totals
+                for _ in 0..centroid.weight.round() as usize {
+                    let sd_tmp: f64 = sd_m;
+                    sd_m += (centroid.mean - sd_tmp) / sd_k;
+                    sd_s += (centroid.mean - sd_tmp) * (centroid.mean - sd_m);
+                    sd_k += 1.0;
+                }
+
+                // do the regular centroid processing
                 if rec == 0 {
                     // skip the first unprocessed centroid, emulating range [1:]
                     rec += 1;
@@ -132,6 +157,9 @@ impl Tdigest {
             self.update_cumulative();
             self.unprocessed.cvect.clear();
         }
+
+        // Finalise the standard deviation
+        self.stdev = (sd_s / (sd_k - 2.0)).sqrt();
     }
 
     fn add_centroid(&mut self, c: Centroid) {
@@ -326,6 +354,22 @@ impl Tdigest {
 
     pub fn save_centroids(&mut self, fspec: String) -> std::io::Result<()> {
         ::std::fs::write(fspec, self.list_centroids())
+    }
+
+    pub fn count(&self) -> usize {
+        return self.count;
+    }
+
+    pub fn mean(&self) -> f64 {
+        return self.mean;
+    }
+
+    pub fn stdev(&self) -> f64 {
+        return self.stdev;
+    }
+
+    pub fn total(&self) -> f64 {
+        return self.total;
     }
 }
 

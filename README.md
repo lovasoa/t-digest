@@ -28,7 +28,9 @@ fn main() {
 ```
 
 ## TODO
-
+- Implement MEAN, STDEV, COUNT, TOTAL
+- Repeat test changes ... load digest by reading test files. 
+- 
 - Dump centroids
 - Save centroids
 - Reload centroids
