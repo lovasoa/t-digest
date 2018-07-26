@@ -1,4 +1,14 @@
 [[package]]
+name = "assert_approx_eq"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "histogram"
+version = "0.6.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
 name = "nodrop"
 version = "0.1.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -16,6 +26,8 @@ dependencies = [
 name = "tdigest"
 version = "0.1.0"
 dependencies = [
+ "assert_approx_eq 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "histogram 0.6.9 (registry+https://github.com/rust-lang/crates.io-index)",
  "quickersort 3.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -33,6 +45,8 @@ version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [metadata]
+"checksum assert_approx_eq 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "1a38a0dd5749f34b8a61d7c1cc47e68c7955676bd17e1b25dd1d30901c556655"
+"checksum histogram 0.6.9 (registry+https://github.com/rust-lang/crates.io-index)" = "12cb882ccb290b8646e554b157ab0b71e64e8d5bef775cd66b6531e52d302669"
 "checksum nodrop 0.1.12 (registry+https://github.com/rust-lang/crates.io-index)" = "9a2228dca57108069a5262f2ed8bd2e82496d2e074a06d1ccc7ce1687b6ae0a2"
 "checksum quickersort 3.0.1 (registry+https://github.com/rust-lang/crates.io-index)" = "307c842cbfdc3956926dfda87716b7e425db6d4ce822a8246ca11e6ee9e5270b"
 "checksum unreachable 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "382810877fe448991dfc7f0dd6e3ae5d58088fd0ea5e35189655f84e6814fa56"
