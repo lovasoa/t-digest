@@ -22,24 +22,8 @@ fn integration_test_digest(fname: String) {
     let f = File::open(&fspec);
     let f = match f {
         Ok(file) => file,
-        Err(e) => {
-            panic!(
-                "Failed to open dataset statistics check file {}: {}",
-                fspec, e
-            );
-        }
+        Err(e) => panic!("Failed to open dataset statistics check file {}: {}", fspec, e)
     };
-
-    let mut fileReader = BufReader::new(File::open(&path));
-    //    for line in fileReader.lines() {
-    //       match line {
-    //         Err(_why)   => { result = 0; },
-    //         Ok(string) => match string.trim().parse::<f64>() {
-    //            None        => panic!("Not a number!"),
-    //           Some(number)=> { t.add(number, 1.0); count += 1; }
-    //      }
-    //     }
-    //    }
 }
 
 #[test]
