@@ -7,7 +7,8 @@ use tdigest::Tdigest;
 #[test]
 fn integration_test_save_centroids() {
     let mut t = Tdigest::new(1000.0);
-    t.add(469.20, 1.0);
+    for i in 0..10 {println!("{}", i)};
+    t.add_weighted(469.20, 1.0);
     match t.save_centroids("tests/centroid_test.json".to_string()) {
         Ok(_) => (),
         Err(_err) => {

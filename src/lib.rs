@@ -178,7 +178,18 @@ impl Tdigest {
         }
     }
 
-    pub fn add(&mut self, x: f64, w: f64) {
+    /// Take a new value with a weight.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// let mut t = tdigest::Tdigest::new(compression);
+    ///
+    /// t.add(5.0, 10.0);
+    ///
+    /// for i in 0..10 {t.add(5.0)}; // equivalent
+    /// ```
+    pub fn add_weighted(&mut self, x: f64, w: f64) {
         if !x.is_nan() {
             self.add_centroid(Centroid {
                 mean: x,
@@ -187,6 +198,18 @@ impl Tdigest {
                 sort_key2: x.fract() as isize,
             });
         }
+    }
+
+    /// Take a new value into account in the statistics
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// let mut t = tdigest::Tdigest::new(compression);
+    /// t.add(5.0);
+    /// ```
+    pub fn add(&mut self, x: f64) {
+        self.add_weighted(x, 1.0);
     }
 
     fn update_cumulative(&mut self) {

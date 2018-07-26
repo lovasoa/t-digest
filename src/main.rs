@@ -5,7 +5,7 @@ use tdigest::Tdigest;
 fn main() {
     let mut t = Tdigest::new(1000.0);
 
-    t.add(469.20, 1.0);
+    t.add_weighted(469.20, 1.0);
     match t.save_centroids("/tmp/centroid.json".to_string()) {
         Ok(_) => (),
         Err(err) => eprintln!("That didn't work {:?}", err),
