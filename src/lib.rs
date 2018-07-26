@@ -173,9 +173,9 @@ impl Tdigest {
 
         if self.processed.len() > self.max_processed
             || self.unprocessed.len() > self.max_unprocessed
-        {
-            self.process();
-        }
+            {
+                self.process();
+            }
     }
 
     /// Take a new value with a weight.
@@ -183,9 +183,9 @@ impl Tdigest {
     /// # Example
     ///
     /// ```
-    /// let mut t = tdigest::Tdigest::new(compression);
+    /// let mut t = tdigest::Tdigest::new(1000.0);
     ///
-    /// t.add(5.0, 10.0);
+    /// t.add_weighted(5.0, 10.0);
     ///
     /// for i in 0..10 {t.add(5.0)}; // equivalent
     /// ```
@@ -205,7 +205,7 @@ impl Tdigest {
     /// # Example
     ///
     /// ```
-    /// let mut t = tdigest::Tdigest::new(compression);
+    /// let mut t = tdigest::Tdigest::new(1000.0);
     /// t.add(5.0);
     /// ```
     pub fn add(&mut self, x: f64) {
@@ -327,7 +327,7 @@ impl Tdigest {
         if index < self.processed.cvect[0].weight / 2.0 {
             return self.min
                 + 2.0 * index / self.processed.cvect[0].weight
-                    * (self.processed.cvect[0].mean - self.min);
+                * (self.processed.cvect[0].mean - self.min);
         }
 
         let mut lower: usize = self.cumulative.len() - 1;
