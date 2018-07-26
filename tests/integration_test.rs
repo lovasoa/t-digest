@@ -3,8 +3,6 @@ extern crate tdigest;
 #[macro_use]
 extern crate assert_approx_eq;
 
-use std::fs::File;
-use std::io::BufReader;
 use tdigest::Tdigest;
 
 #[test]
