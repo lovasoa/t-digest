@@ -14,4 +14,4 @@ quickersort = "3.0"
 
 [dev-dependencies]
 assert_approx_eq = "1.0.0"
-histogram = "0.6.9"
+quickcheck = "0.6.2"
