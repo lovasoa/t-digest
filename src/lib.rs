@@ -7,15 +7,16 @@ struct Centroid {
     sort_key2: isize,
 }
 
-impl Centroid {
-    fn to_string(&self) -> String {
-        format!(
-            "{{\"mean\": \"{mean}\",\"weight\": \"{weight}\"}}",
-            mean = self.mean,
-            weight = self.weight
+impl std::fmt::Display for Centroid {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, r#"{{"mean": {mean},"weight": {weight}}}"#,
+               mean = self.mean,
+               weight = self.weight
         )
     }
+}
 
+impl Centroid {
     fn add(&mut self, r: &Centroid) -> String {
         if r.weight < 0.0 {
             return "centroid weight cannot be less than zero".to_string();
@@ -359,24 +360,9 @@ impl Tdigest {
         );
     }
 
-    pub fn list_centroids(&mut self) -> String {
-        self.process();
-        let mut result = "[".to_string();
-        let mut rec: i32 = 0;
-        for centroid in self.processed.cvect.iter() {
-            if rec == 0 {
-                rec = 1;
-                result = result + &centroid.to_string();
-            } else {
-                result = result + &",".to_string() + &centroid.to_string();
-            }
-        }
-        result = result + &"]".to_string();
-        return result;
-    }
-
     pub fn save_centroids(&mut self, fspec: String) -> std::io::Result<()> {
-        ::std::fs::write(fspec, self.list_centroids())
+        self.process();
+        ::std::fs::write(fspec, self.to_string())
     }
 
     pub fn count(&self) -> usize {
@@ -393,6 +379,24 @@ impl Tdigest {
 
     pub fn total(&self) -> f64 {
         return self.total;
+    }
+}
+
+impl std::fmt::Display for Tdigest {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "[")?;
+        let mut rec: bool = false;
+        let centroids = self.processed.cvect.iter()
+            .chain(self.unprocessed.cvect.iter());
+        for centroid in centroids {
+            if rec == false {
+                rec = true;
+            } else {
+                write!(f, ",")?
+            }
+            centroid.fmt(f)?
+        }
+        write!(f, "]")
     }
 }
 

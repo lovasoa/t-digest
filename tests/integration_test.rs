@@ -21,6 +21,15 @@ fn linear() {
 }
 
 #[test]
+fn display() {
+    let mut t = Tdigest::new(1000.0);
+    t.add(0.0);
+    assert_eq!(r#"[{"mean": 0,"weight": 1}]"#, t.to_string());
+    t.add(1.0);
+    assert_eq!(r#"[{"mean": 0,"weight": 1},{"mean": 1,"weight": 1}]"#, t.to_string());
+}
+
+#[test]
 fn empty() {
     assert!(Tdigest::new(1000.0).quantile(0.1).is_nan());
 }
